@@ -1,0 +1,21 @@
+{
+    "name": "chat-rooms-kafka-auth",
+    "version": "1.0.0",
+    "description": "project to enforce authentication",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server",
+        "server": "nodemon server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "suraj gupta",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "config": "^3.3.11",
+        "express": "^4.19.1",
+        "express-validator": "^7.0.1",
+        "jsonwebtoken": "^9.0.2",
+        "nodemon": "^3.1.0"
+    }
+}
