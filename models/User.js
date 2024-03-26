@@ -3,9 +3,8 @@ const { seqaulize } = require("../config/db");
 
 const User = seqaulize.define("User", {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT(20),
         autoIncrement: true,
-        autoIncrementInitialValue: 1000,
         primaryKey: true,
       },
     name: {
