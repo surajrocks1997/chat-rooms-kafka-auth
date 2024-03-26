@@ -6,7 +6,7 @@ const User = seqaulize.define("User", {
         type: DataTypes.BIGINT(20),
         autoIncrement: true,
         primaryKey: true,
-      },
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
