@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const config = require("config");
 const { check, validationResult } = require("express-validator");
-
-const jwt = require("jsonwebtoken");
+const { User } = require("../../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // @route   POST     api/auth/user
 // @desc    Register User
@@ -12,6 +12,7 @@ const bcrypt = require("bcryptjs");
 router.post(
     "/user",
     [
+        check("name", "Please Include a Name").not().isEmpty(),
         check("email", "Include a Valid Email").isEmail(),
         check(
             "password",
@@ -24,11 +25,23 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
         try {
-            const { email, password } = req.body;
+            const { name, email, password } = req.body;
+
+            let userAlreadyPresent = await User.findOne({ where: { email } });
+            if (userAlreadyPresent) {
+                return res
+                    .status(400)
+                    .json({ errors: [{ msg: "User Already Exists" }] });
+            }
+
+            const salt = await bcrypt.genSalt(10);
+            let pass = await bcrypt.hash(password, salt);
+
+            const newUser = await User.create({ name, email, password: pass });
 
             const payload = {
                 user: {
-                    email: email,
+                    id: newUser.id,
                 },
             };
 
@@ -36,7 +49,7 @@ router.post(
                 payload,
                 config.get("jwtSecret"),
                 {
-                    expiresIn: 360000,
+                    expiresIn: 3600000,
                 },
                 (err, token) => {
                     if (err) throw err;
