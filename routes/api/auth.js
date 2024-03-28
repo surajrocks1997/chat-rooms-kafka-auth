@@ -22,6 +22,25 @@ router.get("/", auth, async (req, res) => {
     }
 });
 
+// @route   GET     api/auth/validateToken
+// @desc    Get Logged-In User
+// @access  Public
+router.get("/validateToken", async (req, res) => {
+    const token = req.header("x-auth-token");
+
+    if (!token) {
+        return res.status(401).json({ msg: "No Token, Authentication Denied" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, config.get("jwtSecret"));
+
+        res.status(200).json({ msg: "Token is Valid" });
+    } catch (err) {
+        res.status(401).json({ msg: "Token is not Valid" });
+    }
+});
+
 // @route   POST     api/auth
 // @desc    Login/Authenticate User and Get Token
 // @access  public
