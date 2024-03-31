@@ -1,7 +1,14 @@
 const express = require("express");
+const cors = require("cors");
 const { connectDB } = require("./config/db");
 
 const app = express();
+
+let corsOption = {
+    origin: ["http://localhost:3000"],
+};
+
+app.use(cors(corsOption));
 
 connectDB();
 
