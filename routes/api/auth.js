@@ -12,7 +12,7 @@ const auth = require("../../middleware/auth");
 // @access  Private
 router.get("/", auth, async (req, res) => {
     try {
-        const user = await User.findByPk(req.user.id, {
+        const user = await User.findByPk(req.userId, {
             attributes: { exclude: ["password"] },
         });
         res.json(user);
@@ -76,9 +76,7 @@ router.post(
             }
 
             const payload = {
-                user: {
-                    id: user.id,
-                },
+                id: user.id,
             };
 
             jwt.sign(
@@ -86,6 +84,7 @@ router.post(
                 config.get("jwtSecret"),
                 {
                     expiresIn: 3600,
+                    subject: email,
                 },
                 (err, token) => {
                     if (err) throw err;
@@ -133,9 +132,7 @@ router.post(
             const newUser = await User.create({ name, email, password: pass });
 
             const payload = {
-                user: {
-                    id: newUser.id,
-                },
+                id: newUser.id,
             };
 
             jwt.sign(
@@ -143,6 +140,7 @@ router.post(
                 config.get("jwtSecret"),
                 {
                     expiresIn: 3600,
+                    subject: email,
                 },
                 (err, token) => {
                     if (err) throw err;
