@@ -144,7 +144,7 @@ router.post(
                 },
                 (err, token) => {
                     if (err) throw err;
-                    res.json({ token });
+                    res.json({ id: newUser.id, token });
                 }
             );
         } catch (err) {
