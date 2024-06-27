@@ -1,6 +1,6 @@
 const Sequalize = require("sequelize");
 const seqaulize = new Sequalize("chat_room_kafka", "root", "admin", {
-    host: "localhost",
+    host: "127.0.0.1",
     port: "3306",
     dialect: "mysql",
 });
